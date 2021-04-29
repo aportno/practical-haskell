@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7cd0fcb9dc6ae0db19811486c0de1d31b4ef0e517baaec930e963064e050e374
+-- hash: e4f1ce4aa6e393cbe551bdb2ed591365c33d4bc41ae32774b07bf3b5817ce9eb
 
 name:           chapter2
 version:        0.1.0.0
@@ -27,6 +27,8 @@ source-repository head
 
 library
   exposed-modules:
+      Chapter2.Section2.Example
+      Chapter2.SimpleFunctions
       Lib
   other-modules:
       Paths_chapter2
