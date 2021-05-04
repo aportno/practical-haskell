@@ -26,7 +26,7 @@ maxmin list = let h = head list
 -- algebraic data type (ADT)
 -- note there is a nested ADT "Person" that represents two strings
 data Client = GovOrg     String
-            | Company    String Integer Person
+            | Company    String Integer Person String
             | Individual Person Bool
             deriving Show
 
@@ -38,4 +38,31 @@ data Person = Person     String String Gender
 -- ADT that is nested inside ADT client
 data Gender = Male | Female | Unknown
             deriving Show
+
+-- pattern matching
+-- sample call clientName1 (Individual (Person "Alex" "Portno" Male) True)
+clientName1 :: Client -> String
+clientName1 client = case client of
+                      GovOrg name                 -> name {- GovOrg constructor; name is the binding variable -}
+                      Company name id person resp -> name {- Company constructor; name id person resp are all binding variables -}
+                      Individual person ads       ->      {- Individual constructor; person and ads are the binding variables -}
+                          case person of
+                              Person firstName lastName gender -> firstName ++ " " ++ lastName
+
+clientName2 :: Client -> String
+clientName2 client = case client of
+                        GovOrg name        -> name
+                        Company name _ _ _ -> name
+                        Individual (Person firstName lastName _ ) _ -> firstName ++ " " ++ lastName
+
+companyName :: Client -> Maybe String
+companyName client = case client of
+                        Company name _ _ _ -> Just name
+                        _                  -> Nothing
+
+sorted :: [Integer] -> Bool
+sorted []       = True
+sorted [_]      = True
+sorted (x : r@(y:_)) = x < y && sorted r
+
 
