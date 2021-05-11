@@ -1,3 +1,7 @@
+{-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE RecordWildCards #-}
+
 firstOrEmpty :: [[Char]] -> [Char]
 firstOrEmpty lst = if not (null lst) then head lst else "empty"
 
@@ -65,4 +69,39 @@ sorted []       = True
 sorted [_]      = True
 sorted (x : r@(y:_)) = x < y && sorted r
 
+ifibonacci :: Integer -> Maybe Integer
+ifibonacci number = if number < 0
+                    then Nothing
+                    else case number of
+                        0       -> Just 0
+                        1       -> Just 1
+                        number' -> let Just fibonacci1 = ifibonacci (number' - 1)
+                                       Just fibonacci2 = ifibonacci (number' - 2)
+                                   in Just (fibonacci1 + fibonacci2)
 
+specialClient :: Client -> Bool
+specialClient (clientName1 -> "Mr. Portno")   = True
+specialClient _                              = False
+
+-- Records
+data ClientR = GovOrgR  { clientRName :: String }
+             | CompanyR { clientRName :: String
+                        , companyID :: Integer
+                        , person :: PersonR
+                        , duty :: String }
+             | IndividualR { person :: PersonR }
+             deriving Show
+
+data PersonR = PersonR { firstName :: String
+                       , lastName :: String
+                       } deriving Show
+
+greet :: ClientR -> String
+greet IndividualR { person = PersonR { firstName = fn } } = "Hi, " ++ fn
+greet CompanyR    { clientRName } = "Hi, " ++ clientRName
+greet GovOrgR     { } = "Welcome"
+
+greet1 :: ClientR -> String
+greet1 IndividualR { person = PersonR { .. } } = "Hi, " ++ firstName
+greet1 CompanyR    { .. }                      = "Hi, " ++ clientRName
+greet1 GovOrgR     { }                         = "Welcome"
